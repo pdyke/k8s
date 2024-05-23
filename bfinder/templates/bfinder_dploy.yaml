@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booksfinder
+spec:
+  selector:
+    matchLabels:
+      app: booksfinder
+  template:
+    metadata:
+      labels:
+        app: booksfinder
+    spec:
+      containers:
+      - name: booksfinder
+        image: epauldike/booksfinder:latest
+        ports:
+        - containerPort: 80

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfigmap
+  labels:
+    app: myapplication
+binaryData:
+  user: amFtZXM=
+  user2: am9obg==
+  user3: eW9taQ==

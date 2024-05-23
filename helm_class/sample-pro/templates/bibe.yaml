@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bibe
+spec:
+  selector:
+    matchLabels:
+      app: bibe
+  template:
+    metadata:
+      labels:
+        app: bibe
+    spec:
+      containers:
+      - name: bibe
+        image: epauldike/bibe:1
+        ports:
+        - containerPort: 4343
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bibe
+spec:
+  selector:
+    app: bibe
+  ports:
+  - port: 4343
+    targetPort: 4343
+  type: ClusterIP
+

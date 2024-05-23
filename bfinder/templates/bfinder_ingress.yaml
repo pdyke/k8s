@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: booksfinder
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    name: booksfinder
+spec:
+  rules:
+  - host: books.epauldike.online
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: booksfinder
+            port: 
+              number: 80
+
+  tls:
+    - hosts:
+        - books.epauldike.online
+      secretName: tls-2048-kibana

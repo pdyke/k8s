@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: napa
+spec:
+  selector:
+    matchLabels:
+      app: napa
+  template:
+    metadata:
+      labels:
+        app: napa
+    spec:
+      containers:
+      - name: napa
+        image: epauldike/napa:latest
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+          - name: mypv
+            mountPath: /app/data
+      volumes:
+        - name: mypv
+          persistentVolumeClaim:
+              claimName: mypvc
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: napa
+spec:
+  selector:
+    app: napa
+  ports:
+  - port: 3000
+    targetPort: 3000
+    # nodePort: 30100
+  type: LoadBalancer
+   
+

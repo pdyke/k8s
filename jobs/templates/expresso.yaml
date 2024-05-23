@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-expresso
+spec:
+  selector:
+    matchLabels:
+      app: mongo-expresso
+  template:
+    metadata:
+      labels:
+        app: mongo-expresso
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: mongo-expresso
+        image: mongo-express:latest
+        ports:
+        - containerPort: 8081
+      #   volumeMounts:
+      #     - name: mypv
+      #       mountPath: /data/db
+      # volumes:
+      #   - name: mypv
+      #     persistentVolumeClaim:
+      #         claimName: mypvc
+        env:
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: username
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: password
+          - name: ME_CONFIG_MONGODB_SERVER
+            value: mongo
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-expresso
+spec:
+  selector:
+    app: mongo-expresso
+  ports:
+  - port: 8081
+    targetPort: 8081
+    # nodePort: 30000
+  type: LoadBalancer
